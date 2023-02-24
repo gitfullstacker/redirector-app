@@ -3,21 +3,84 @@
 
 <head>
     <title>My First Chrome Extension</title>
-    <script src="popup.js"></script>
     <style>
         #popup {
             width: 300px;
             height: 200px;
-            text-align: center;
-            line-height: 200px;
+            overflow-y: auto;
+        }
+        #welcome_panel {
+            display: flex;
+            flex-direction: column;
+        }
+        #information_panel {
+            display: none;
+            flex-direction: column;
+        }
+        .redirect-item {
+            border: 1px solid black;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+        }
+        .redirect-item div {
+            display: flex;
+            flex-direction: column;
+        }
+        .redirect-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
     </style>
 </head>
 
 <body>
     <div id="popup">
-        <input type="button" id="toggle_button" value="Disable" />
+        <div id="welcome_panel">
+            <h3>Welcome to Redirect App</h3>
+            <p>please write your name to keep your redirect information.</p>
+            <div style="display: flex;flex-direction: row;gap: 4px;">
+                <input type="text" id="user_name">
+                <button id="submit_button">Submit</button>
+            </div>
+        </div>
+        
+        <div id="information_panel">
+            <h3 id="display_user_name"></h3>
+            <div style="display: flex;align-items: center;">
+                <input type="checkbox" id="url_enable">
+                <label for="url_enable">Enabled</label>
+            </div>
+            <div class="redirect-list">
+                <div class="redirect-item">
+                    <p style="margin: 0px;">redirect item1</p>
+                    <div>
+                        <p>Filter URL</p>
+                        <input type="url" id="filter_url1" style="width: 98%;">
+                    </div>
+                    <div>
+                        <p>Redirect URL</p>
+                        <input type="url" id="redirect_url1" style="width: 98%;">
+                    </div>
+                </div>
+                <div class="redirect-item">
+                    <p style="margin: 0px;">redirect item2</p>
+                    <div>
+                        <p>Filter URL</p>
+                        <input type="url" id="filter_url2" style="width: 98%;">
+                    </div>
+                    <div>
+                        <p>Redirect URL</p>
+                        <input type="url" id="redirect_url2" style="width: 98%;">
+                    </div>
+                </div>
+            </div>
+            
+            <button id="save" style="margin-top: 5px;">Save</button>
+        </div>
     </div>
+    <script src="popup.js"></script>
 </body>
 
 </html>

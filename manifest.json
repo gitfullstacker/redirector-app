@@ -12,19 +12,11 @@
         "service_worker": "background.js"
     },
     "permissions": [
+        "storage",
         "declarativeNetRequest",
         "declarativeNetRequestFeedback"
     ],
     "host_permissions": [
-        "*://*.com/*"
-    ],
-    "declarative_net_request": {
-        "rule_resources": [
-            {
-                "id": "1",
-                "enabled": true,
-                "path": "rules.json"
-            }
-        ]
-    }
+        "<all_urls>"
+    ]
 }
