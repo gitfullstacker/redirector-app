@@ -6,8 +6,6 @@
     <style>
         #popup {
             width: 300px;
-            height: 200px;
-            overflow-y: auto;
         }
         #welcome_panel {
             display: flex;
@@ -16,6 +14,7 @@
         #information_panel {
             display: none;
             flex-direction: column;
+            gap: 5px;
         }
         .redirect-item {
             border: 1px solid black;
@@ -48,9 +47,12 @@
         
         <div id="information_panel">
             <h3 id="display_user_name"></h3>
-            <div style="display: flex;align-items: center;">
-                <input type="checkbox" id="url_enable">
-                <label for="url_enable">Enabled</label>
+            <div style="display: flex;justify-content: space-between;">
+                <div style="display: flex;align-items: center;">
+                    <input type="checkbox" id="url_enable">
+                    <label for="url_enable">Enabled</label>
+                </div>
+                <button id="save" style="margin-top: 5px;">Save</button>
             </div>
             <div class="redirect-list">
                 <div class="redirect-item">
@@ -75,9 +77,40 @@
                         <input type="url" id="redirect_url2" style="width: 98%;">
                     </div>
                 </div>
+                <div class="redirect-item">
+                    <p style="margin: 0px;">redirect item3</p>
+                    <div>
+                        <p>Filter URL</p>
+                        <input type="url" id="filter_url3" style="width: 98%;">
+                    </div>
+                    <div>
+                        <p>Redirect URL</p>
+                        <input type="url" id="redirect_url3" style="width: 98%;">
+                    </div>
+                </div>
+                <div class="redirect-item">
+                    <p style="margin: 0px;">redirect item4</p>
+                    <div>
+                        <p>Filter URL</p>
+                        <input type="url" id="filter_url4" style="width: 98%;">
+                    </div>
+                    <div>
+                        <p>Redirect URL</p>
+                        <input type="url" id="redirect_url4" style="width: 98%;">
+                    </div>
+                </div>
+                <div class="redirect-item">
+                    <p style="margin: 0px;">redirect item5</p>
+                    <div>
+                        <p>Filter URL</p>
+                        <input type="url" id="filter_url5" style="width: 98%;">
+                    </div>
+                    <div>
+                        <p>Redirect URL</p>
+                        <input type="url" id="redirect_url5" style="width: 98%;">
+                    </div>
+                </div>
             </div>
-            
-            <button id="save" style="margin-top: 5px;">Save</button>
         </div>
     </div>
     <script src="popup.js"></script>

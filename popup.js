@@ -24,7 +24,7 @@ document.getElementById("save").onclick = () => {
     var rules = [];
     var removeIds = [];
 
-    for (let i = 1; i <= 2; i++) {
+    for (let i = 1; i <= 5; i++) {
         const filter_url = document.getElementById("filter_url" + i).value;
         const redirect_url = document.getElementById("redirect_url" + i).value;
 
@@ -88,7 +88,7 @@ document.getElementById('url_enable').onchange = (event) => {
             var rules = [];
             var removeIds = [];
 
-            for (let i = 1; i <= 2; i++) {
+            for (let i = 1; i <= 5; i++) {
                 const filter_url = document.getElementById("filter_url" + i).value;
                 const redirect_url = document.getElementById("redirect_url" + i).value;
 
@@ -128,7 +128,7 @@ document.getElementById('url_enable').onchange = (event) => {
             var rules = [];
             var removeIds = [];
 
-            for (let i = 1; i <= 2; i++) {
+            for (let i = 1; i <= 5; i++) {
                 removeIds.push(i);
             }
             
