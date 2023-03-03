@@ -1,22 +1,21 @@
 {
-    "manifest_version": 3,
-    "name": "Redirector App",
-    "description": "This is the extension that redirect with URL set by user instead specific URL.",
-    "version": "1.0",
-    "action": {
-        "default_icon": "image.png",
-        "default_popup": "popup.html",
-        "default_title": "Redirector App"
-    },
-    "background": {
-        "service_worker": "background.js"
-    },
-    "permissions": [
-        "storage",
-        "declarativeNetRequest",
-        "declarativeNetRequestFeedback"
-    ],
-    "host_permissions": [
-        "<all_urls>"
-    ]
+  "manifest_version": 3,
+  "name": "Redirector App",
+  "description": "This is the extension that redirect with URL set by user instead specific URL.",
+  "version": "1.0",
+  "action": {
+    "default_icon": "image.png",
+    "default_popup": "popup.html",
+    "default_title": "Redirector App"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "permissions": [
+    "storage",
+    "declarativeNetRequest",
+    "declarativeNetRequestFeedback",
+    "alarms"
+  ],
+  "host_permissions": ["<all_urls>"]
 }

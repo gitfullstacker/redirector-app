@@ -1,119 +1,159 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>My First Chrome Extension</title>
+
     <style>
-        #popup {
-            width: 300px;
-        }
-        #welcome_panel {
-            display: flex;
-            flex-direction: column;
-        }
-        #information_panel {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-        }
-        .redirect-item {
-            border: 1px solid black;
-            padding: 5px;
-            display: flex;
-            flex-direction: column;
-        }
-        .redirect-item div {
-            display: flex;
-            flex-direction: column;
-        }
-        .redirect-list {
-            display: flex;
-            flex-direction: column;
-            gap: 2px;
-        }
+      #popup {
+        width: 300px;
+      }
+      #welcome_panel {
+        display: flex;
+        flex-direction: column;
+      }
+      #information_panel {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+      }
+      .redirect-item {
+        border: 1px solid black;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+      }
+      .redirect-item div {
+        display: flex;
+        flex-direction: column;
+      }
+      .redirect-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .time-list {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .time-item {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .time-item div {
+        display: flex;
+        flex-direction: row;
+        gap: 2px;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="popup">
-        <div id="welcome_panel">
-            <h3>Welcome to Redirect App</h3>
-            <p>please write your name to keep your redirect information.</p>
-            <div style="display: flex;flex-direction: row;gap: 4px;">
-                <input type="text" id="user_name">
-                <button id="submit_button">Submit</button>
-            </div>
+      <div id="welcome_panel">
+        <h3>Welcome to Redirect App</h3>
+        <p>please write your name to keep your redirect information.</p>
+        <div style="display: flex; flex-direction: row; gap: 4px">
+          <input type="text" id="user_name" />
+          <button id="submit_button">Submit</button>
         </div>
-        
-        <div id="information_panel">
-            <h3 id="display_user_name"></h3>
-            <div style="display: flex;justify-content: space-between;">
-                <div style="display: flex;align-items: center;">
-                    <input type="checkbox" id="url_enable">
-                    <label for="url_enable">Enabled</label>
-                </div>
-                <button id="save" style="margin-top: 5px;">Save</button>
-            </div>
-            <div class="redirect-list">
-                <div class="redirect-item">
-                    <p style="margin: 0px;">redirect item1</p>
-                    <div>
-                        <p>Filter URL</p>
-                        <input type="url" id="filter_url1" style="width: 98%;">
-                    </div>
-                    <div>
-                        <p>Redirect URL</p>
-                        <input type="url" id="redirect_url1" style="width: 98%;">
-                    </div>
-                </div>
-                <div class="redirect-item">
-                    <p style="margin: 0px;">redirect item2</p>
-                    <div>
-                        <p>Filter URL</p>
-                        <input type="url" id="filter_url2" style="width: 98%;">
-                    </div>
-                    <div>
-                        <p>Redirect URL</p>
-                        <input type="url" id="redirect_url2" style="width: 98%;">
-                    </div>
-                </div>
-                <div class="redirect-item">
-                    <p style="margin: 0px;">redirect item3</p>
-                    <div>
-                        <p>Filter URL</p>
-                        <input type="url" id="filter_url3" style="width: 98%;">
-                    </div>
-                    <div>
-                        <p>Redirect URL</p>
-                        <input type="url" id="redirect_url3" style="width: 98%;">
-                    </div>
-                </div>
-                <div class="redirect-item">
-                    <p style="margin: 0px;">redirect item4</p>
-                    <div>
-                        <p>Filter URL</p>
-                        <input type="url" id="filter_url4" style="width: 98%;">
-                    </div>
-                    <div>
-                        <p>Redirect URL</p>
-                        <input type="url" id="redirect_url4" style="width: 98%;">
-                    </div>
-                </div>
-                <div class="redirect-item">
-                    <p style="margin: 0px;">redirect item5</p>
-                    <div>
-                        <p>Filter URL</p>
-                        <input type="url" id="filter_url5" style="width: 98%;">
-                    </div>
-                    <div>
-                        <p>Redirect URL</p>
-                        <input type="url" id="redirect_url5" style="width: 98%;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script src="popup.js"></script>
-</body>
+      </div>
 
+      <div id="information_panel">
+        <h3 id="display_user_name"></h3>
+        <div style="display: flex; justify-content: space-between">
+          <div style="display: flex; align-items: center">
+            <input type="checkbox" id="url_enable" checked />
+            <label for="url_enable">Enabled</label>
+          </div>
+          <div style="display: flex;flex-direction: row;gap: 2px;">
+            <button id="save" style="margin-top: 5px">Save</button>
+            <button id="export" style="margin-top: 5px">Export</button>
+            <button id="import" style="margin-top: 5px">Import</button>
+            <input id="json_input" type="file" accept="application/json" hidden />
+          </div>
+        </div>
+        <div class="time-list">
+          <div class="time-item">
+            <p>Working Time</p>
+            <div>
+              <p>from:</p>
+              <input type="time" id="working_start_time" />
+              <p>~ to:</p>
+              <input type="time" id="working_end_time" />
+            </div>
+          </div>
+          <div class="time-item">
+            <p>Resting time</p>
+            <div>
+              <p>from:</p>
+              <input type="time" id="resting_start_time" />
+              <p>~ to:</p>
+              <input type="time" id="resting_end_time" />
+            </div>
+          </div>
+        </div>
+        <div class="redirect-list">
+          <div class="redirect-item">
+            <p style="margin: 0px">redirect item1</p>
+            <div>
+              <p>Filter URL</p>
+              <input type="url" id="filter_url1" style="width: 98%" />
+            </div>
+            <div>
+              <p>Redirect URL</p>
+              <input type="url" id="redirect_url1" style="width: 98%" />
+            </div>
+          </div>
+          <div class="redirect-item">
+            <p style="margin: 0px">redirect item2</p>
+            <div>
+              <p>Filter URL</p>
+              <input type="url" id="filter_url2" style="width: 98%" />
+            </div>
+            <div>
+              <p>Redirect URL</p>
+              <input type="url" id="redirect_url2" style="width: 98%" />
+            </div>
+          </div>
+          <div class="redirect-item">
+            <p style="margin: 0px">redirect item3</p>
+            <div>
+              <p>Filter URL</p>
+              <input type="url" id="filter_url3" style="width: 98%" />
+            </div>
+            <div>
+              <p>Redirect URL</p>
+              <input type="url" id="redirect_url3" style="width: 98%" />
+            </div>
+          </div>
+          <div class="redirect-item">
+            <p style="margin: 0px">redirect item4</p>
+            <div>
+              <p>Filter URL</p>
+              <input type="url" id="filter_url4" style="width: 98%" />
+            </div>
+            <div>
+              <p>Redirect URL</p>
+              <input type="url" id="redirect_url4" style="width: 98%" />
+            </div>
+          </div>
+          <div class="redirect-item">
+            <p style="margin: 0px">redirect item5</p>
+            <div>
+              <p>Filter URL</p>
+              <input type="url" id="filter_url5" style="width: 98%" />
+            </div>
+            <div>
+              <p>Redirect URL</p>
+              <input type="url" id="redirect_url5" style="width: 98%" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="jquery-3.6.3.min.js"></script>
+    <script src="popup.js"></script>
+  </body>
 </html>

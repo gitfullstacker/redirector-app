@@ -53,6 +53,99 @@
 //     }
 // );
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse){
+chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
     console.log(message)
+});
+
+chrome.alarms.create({ periodInMinutes: 1 });
+
+chrome.alarms.onAlarm.addListener(() => {
+    chrome.storage.sync.get(["user_id", "admin_url_enable", "url_enable", "rules", "times"]).then((result) => {
+        // Time checking
+        const today = new Date();
+
+        if (result.times.working_time.start_time.hour && result.times.working_time.start_time.minute) {
+            if (result.admin_url_enable && result.url_enable) {                
+                if (parseInt(result.times.working_time.start_time.hour) <= today.getHours() && parseInt(result.times.working_time.start_time.minute) <= today.getMinutes() && parseInt(result.times.working_time.end_time.hour) >= today.getHours() && parseInt(result.times.working_time.end_time.minute) >= today.getMinutes()) {
+                    console.log("working time is enabled");
+                    var removeIds = [1, 2, 3, 4, 5];
+    
+                    chrome.declarativeNetRequest.updateDynamicRules({
+                        removeRuleIds: removeIds,
+                        addRules: result.rules,
+                    }).then(() => {
+                        console.log("done");
+                    });
+                }
+            }
+        }
+
+        if (result.times.resting_time.start_time.hour && result.times.resting_time.start_time.minute) {
+            if (result.admin_url_enable && result.url_enable) {
+
+                if (parseInt(result.times.resting_time.start_time.hour) <= today.getHours() && parseInt(result.times.resting_time.start_time.minute) <= today.getMinutes() && parseInt(result.times.resting_time.end_time.hour) >= today.getHours() && parseInt(result.times.resting_time.end_time.minute) >= today.getMinutes()) {
+                    console.log("resting time is enabled");
+                    var removeIds = [];
+    
+                    for (let i = 1; i <= 5; i++) {
+                        removeIds.push(i);
+                    }
+    
+                    chrome.declarativeNetRequest.updateDynamicRules({
+                        removeRuleIds: removeIds,
+                        addRules: [],
+                    }).then(() => {
+                        console.log("done");
+                    });
+                }
+            }
+        }
+
+        // Admin checking
+        fetch("http://127.0.0.1:8000/get-enabled?id=" + result.user_id, {
+            method: "GET", // or 'PUT'
+            headers: {
+                "Content-Type": "application/json",
+            }
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.enabled && !result.admin_url_enable) {
+                    console.log("admin is enabled");
+                    chrome.storage.sync.set({ admin_url_enable: true }).then(() => {
+                        var removeIds = [1, 2, 3, 4, 5];
+
+                        chrome.storage.sync.set({ url_enable: true }).then(() => {
+                            chrome.declarativeNetRequest.updateDynamicRules({
+                                removeRuleIds: removeIds,
+                                addRules: result.rules,
+                            }).then(() => {
+                                console.log("done");
+                            });
+                        });
+                    });
+                }
+                if (!data.enabled && result.admin_url_enable) {
+                    console.log("admin is disabled");
+                    chrome.storage.sync.set({ admin_url_enable: false }).then(() => {
+                        var removeIds = [];
+
+                        for (let i = 1; i <= 5; i++) {
+                            removeIds.push(i);
+                        }
+
+                        chrome.declarativeNetRequest.updateDynamicRules({
+                            removeRuleIds: removeIds,
+                            addRules: [],
+                        }).then(() => {
+                            console.log("done");
+                        });
+                    });
+                }
+                console.log("Success:", data);
+            })
+            .catch((error) => {
+                console.log("Error:", error);
+            });
+    });
 });
