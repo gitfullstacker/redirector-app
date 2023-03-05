@@ -46,7 +46,7 @@ document.getElementById('json_input').onchange = (event) => {
     reader.readAsText(event.target.files[0]);
 }
 
-function onReaderLoad(event){
+function onReaderLoad(event) {
     var rules = JSON.parse(event.target.result);
     if (rules.length > 0) {
         chrome.storage.sync.set({ rules: rules }).then(() => {
@@ -59,27 +59,23 @@ function onReaderLoad(event){
 
 function loadRules() {
     chrome.storage.sync.get(["rules"]).then((result) => {
-        for (let i = 0; i < result.rules.length; i++) {
-            const rule = result.rules[i];
-            document.getElementById("filter_url" + (i + 1)).value = rule.condition.urlFilter;
-            document.getElementById("redirect_url" + (i + 1)).value = rule.action.redirect.url;
+        if (result.rules) {
+            for (let i = 0; i < result.rules.length; i++) {
+                const rule = result.rules[i];
+                document.getElementById("filter_url" + (i + 1)).value = rule.condition.urlFilter;
+                document.getElementById("redirect_url" + (i + 1)).value = rule.action.redirect.url;
+            }
         }
     });
 }
 
 function loadTimes() {
-    chrome.storage.sync.get(["times"]).then((result) => {
-        if (result.times.working_time.start_time.hour && result.times.working_time.start_time.minute) {
-            document.getElementById("working_start_time").value = result.times.working_time.start_time.hour + ":" + result.times.working_time.start_time.minute;
-        }
-        if (result.times.working_time.end_time.hour && result.times.working_time.end_time.minute) {
-            document.getElementById("working_end_time").value = result.times.working_time.end_time.hour + ":" + result.times.working_time.end_time.minute;
-        }
-        if (result.times.resting_time.start_time.hour && result.times.resting_time.start_time.minute) {
-            document.getElementById("resting_start_time").value = result.times.resting_time.start_time.hour + ":" + result.times.resting_time.start_time.minute;
-        }
-        if (result.times.resting_time.end_time.hour && result.times.resting_time.end_time.minute) {
-            document.getElementById("resting_end_time").value = result.times.resting_time.end_time.hour + ":" + result.times.resting_time.end_time.minute;
+    chrome.storage.sync.get(["working_time"]).then((result) => {
+        if (result.working_time) {
+            if (result.working_time.start_date && result.working_time.end_date) {
+                document.getElementById("working_start_date").value = result.working_time.start_date;
+                document.getElementById("working_end_date").value = result.working_time.end_date;
+            }
         }
     });
 }
@@ -101,27 +97,9 @@ document.getElementById("submit_button").onclick = () => {
                 user_id: response.user.id,
                 url_enable: true,
                 admin_url_enable: true,
-                times: {
-                    working_time: {
-                        start_time: {
-                            hour: null,
-                            minute: null,
-                        },
-                        end_time: {
-                            hour: null,
-                            minute: null,
-                        }
-                    },
-                    resting_time: {
-                        start_time: {
-                            hour: null,
-                            minute: null,
-                        },
-                        end_time: {
-                            hour: null,
-                            minute: null,
-                        }
-                    }
+                working_time: {
+                    start_date: null,
+                    end_date: null,
                 }
             }).then(() => {
                 document.getElementById("welcome_panel").style.display = "none";
@@ -221,55 +199,20 @@ function disableRedirector() {
 }
 
 function updateTimes() {
-    var times = {
-        working_time: {
-            start_time: {
-                hour: null,
-                minute: null,
-            },
-            end_time: {
-                hour: null,
-                minute: null,
-            }
-        },
-        resting_time: {
-            start_time: {
-                hour: null,
-                minute: null,
-            },
-            end_time: {
-                hour: null,
-                minute: null,
-            }
-        }
+    var working_time = {
+        start_date: null,
+        end_date: null
     }
 
-    var working_start_time = document.getElementById("working_start_time").value;
-    var working_end_time = document.getElementById("working_end_time").value;
-    var resting_start_time = document.getElementById("resting_start_time").value;
-    var resting_end_time = document.getElementById("resting_end_time").value;
+    var working_start_date = document.getElementById("working_start_date").value;
+    var working_end_date = document.getElementById("working_end_date").value;
 
-    if (working_start_time && working_end_time) {
-        const working_start_time_array = working_start_time.split(":");
-        const working_end_time_array = working_end_time.split(":");
-
-        times.working_time.start_time.hour = working_start_time_array[0];
-        times.working_time.start_time.minute = working_start_time_array[1];
-        times.working_time.end_time.hour = working_end_time_array[0];
-        times.working_time.end_time.minute = working_end_time_array[1];
+    if (working_start_date && working_end_date) {
+        working_time.start_date = working_start_date;
+        working_time.end_date = working_end_date;
     }
 
-    if (resting_start_time && resting_end_time) {
-        const resting_start_time_array = resting_start_time.split(":");
-        const resting_end_time_array = resting_end_time.split(":");
-
-        times.resting_time.start_time.hour = resting_start_time_array[0];
-        times.resting_time.start_time.minute = resting_start_time_array[1];
-        times.resting_time.end_time.hour = resting_end_time_array[0];
-        times.resting_time.end_time.minute = resting_end_time_array[1];
-    }
-
-    chrome.storage.sync.set({ times: times }).then(() => {
-        console.log(times)
+    chrome.storage.sync.set({ working_time: working_time }).then(() => {
+        console.log(working_time)
     });
 }

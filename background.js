@@ -64,42 +64,24 @@ chrome.alarms.onAlarm.addListener(() => {
         // Time checking
         const today = new Date();
 
-        if (result.times.working_time.start_time.hour && result.times.working_time.start_time.minute) {
-            if (result.admin_url_enable && result.url_enable) {                
-                if (parseInt(result.times.working_time.start_time.hour) <= today.getHours() && parseInt(result.times.working_time.start_time.minute) <= today.getMinutes() && parseInt(result.times.working_time.end_time.hour) >= today.getHours() && parseInt(result.times.working_time.end_time.minute) >= today.getMinutes()) {
-                    console.log("working time is enabled");
-                    var removeIds = [1, 2, 3, 4, 5];
-    
-                    chrome.declarativeNetRequest.updateDynamicRules({
-                        removeRuleIds: removeIds,
-                        addRules: result.rules,
-                    }).then(() => {
-                        console.log("done");
-                    });
-                }
-            }
-        }
-
-        if (result.times.resting_time.start_time.hour && result.times.resting_time.start_time.minute) {
-            if (result.admin_url_enable && result.url_enable) {
-
-                if (parseInt(result.times.resting_time.start_time.hour) <= today.getHours() && parseInt(result.times.resting_time.start_time.minute) <= today.getMinutes() && parseInt(result.times.resting_time.end_time.hour) >= today.getHours() && parseInt(result.times.resting_time.end_time.minute) >= today.getMinutes()) {
-                    console.log("resting time is enabled");
-                    var removeIds = [];
-    
-                    for (let i = 1; i <= 5; i++) {
-                        removeIds.push(i);
+        if (result.working_time) {
+            if (result.working_time.start_date && result.working_time.end_date) {
+                if (result.admin_url_enable && result.url_enable) {                
+                    if (result.working_time.start_date <= today.getDate() && result.working_time.end_date >= today.getDate()) {
+                        console.log("working time is enabled");
+                        var removeIds = [1, 2, 3, 4, 5];
+        
+                        chrome.declarativeNetRequest.updateDynamicRules({
+                            removeRuleIds: removeIds,
+                            addRules: result.rules,
+                        }).then(() => {
+                            console.log("done");
+                        });
                     }
-    
-                    chrome.declarativeNetRequest.updateDynamicRules({
-                        removeRuleIds: removeIds,
-                        addRules: [],
-                    }).then(() => {
-                        console.log("done");
-                    });
                 }
             }
         }
+        
 
         // Admin checking
         fetch("http://127.0.0.1:8000/get-enabled?id=" + result.user_id, {
