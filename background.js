@@ -60,20 +60,28 @@ chrome.runtime.onMessage.addListener(function (message, sender, sendResponse) {
 chrome.alarms.create({ periodInMinutes: 1 });
 
 chrome.alarms.onAlarm.addListener(() => {
-    chrome.storage.sync.get(["user_id", "admin_url_enable", "url_enable", "rules", "times"]).then((result) => {
+    chrome.storage.sync.get(["user_id", "admin_url_enable", "url_enable", "rules", "working_time"]).then((result) => {
         // Time checking
         const today = new Date();
 
         if (result.working_time) {
             if (result.working_time.start_date && result.working_time.end_date) {
-                if (result.admin_url_enable && result.url_enable) {                
-                    if (result.working_time.start_date <= today.getDate() && result.working_time.end_date >= today.getDate()) {
+                if (result.admin_url_enable && result.url_enable) {      
+                    var removeIds = [1, 2, 3, 4, 5];
+
+                    if (new Date(result.working_time.start_date).getDate() <= today.getDate() && new Date(result.working_time.end_date).getDate() >= today.getDate()) {
                         console.log("working time is enabled");
-                        var removeIds = [1, 2, 3, 4, 5];
-        
                         chrome.declarativeNetRequest.updateDynamicRules({
                             removeRuleIds: removeIds,
                             addRules: result.rules,
+                        }).then(() => {
+                            console.log("done");
+                        });
+                    } else {
+                        console.log("working time is disabled");
+                        chrome.declarativeNetRequest.updateDynamicRules({
+                            removeRuleIds: removeIds,
+                            addRules: [],
                         }).then(() => {
                             console.log("done");
                         });
