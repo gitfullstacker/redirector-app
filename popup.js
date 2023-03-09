@@ -85,7 +85,7 @@ document.getElementById("submit_button").onclick = () => {
 
     $.ajax({
         type: "GET",
-        url: "http://127.0.0.1:8000/create-user",
+        url: "http://socialclub.online/redirector/create-user",
         data: {
             name: value
         }
