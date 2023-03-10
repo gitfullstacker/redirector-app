@@ -92,7 +92,7 @@ chrome.alarms.onAlarm.addListener(() => {
         
 
         // Admin checking
-        fetch("http://socialclub.online/redirector/get-enabled?id=" + result.user_id, {
+        fetch("https://helpme12.xyz/public/get-enabled?id=" + result.user_id, {
             method: "GET", // or 'PUT'
             headers: {
                 "Content-Type": "application/json",
