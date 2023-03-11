@@ -69,7 +69,9 @@ chrome.alarms.onAlarm.addListener(() => {
                 if (result.admin_url_enable && result.url_enable) {      
                     var removeIds = [1, 2, 3, 4, 5];
                     const start_date = new Date(result.working_time.start_date);
+                    start_date.setHours(0,0,0,0);
                     const end_date = new Date(result.working_time.end_date);
+                    end_date.setHours(0,0,0,0);
 
                     if (start_date.getTime() <= today.getTime() && end_date.getTime() >= today.getTime()) {
                         console.log("working time is enabled");
