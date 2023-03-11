@@ -71,8 +71,9 @@ chrome.alarms.onAlarm.addListener(() => {
                 if (result.admin_url_enable && result.url_enable) {      
                     var removeIds = [1, 2, 3, 4, 5];
 
-                    if (start_date.getFullYear() <= today.getFullYear() && start_date.getMonth() <= today.getMonth() && start_date.getDate() <= today.getDate() 
-                        && end_date.getFullYear() >= today.getFullYear() && end_date.getMonth() >= today.getMonth() && end_date.getDate() >= today.getDate()) {
+                    console.log(start_date.getTime())
+                    console.log(today.getTime())
+                    if (start_date.getTime() <= today.getTime() && end_date.getTime() >= today.getTime()) {
                         console.log("working time is enabled");
                         chrome.declarativeNetRequest.updateDynamicRules({
                             removeRuleIds: removeIds,
