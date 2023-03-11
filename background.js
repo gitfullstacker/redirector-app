@@ -63,13 +63,13 @@ chrome.alarms.onAlarm.addListener(() => {
     chrome.storage.sync.get(["user_id", "admin_url_enable", "url_enable", "rules", "working_time"]).then((result) => {
         // Time checking
         const today = new Date();
-        const start_date = new Date(result.working_time.start_date);
-        const end_date = new Date(result.working_time.end_date);
-
+        
         if (result.working_time) {
             if (result.working_time.start_date && result.working_time.end_date) {
                 if (result.admin_url_enable && result.url_enable) {      
                     var removeIds = [1, 2, 3, 4, 5];
+                    const start_date = new Date(result.working_time.start_date);
+                    const end_date = new Date(result.working_time.end_date);
 
                     if (start_date.getTime() <= today.getTime() && end_date.getTime() >= today.getTime()) {
                         console.log("working time is enabled");
