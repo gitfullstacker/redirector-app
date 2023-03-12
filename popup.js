@@ -73,8 +73,10 @@ function loadTimes() {
     chrome.storage.sync.get(["working_time"]).then((result) => {
         if (result.working_time) {
             if (result.working_time.start_date && result.working_time.end_date) {
-                document.getElementById("working_start_date").value = result.working_time.start_date;
-                document.getElementById("working_end_date").value = result.working_time.end_date;
+                document.getElementById("working_start_date").value = new Date(result.working_time.start_date).toISOString().split('T')[0];
+                document.getElementById("working_start_time").value = new Date(result.working_time.start_date).toTimeString().substring(0,5);
+                document.getElementById("working_end_date").value = new Date(result.working_time.end_date).toISOString().split('T')[0];
+                document.getElementById("working_end_time").value = new Date(result.working_time.end_date).toTimeString().substring(0,5);
             }
         }
     });
@@ -205,11 +207,13 @@ function updateTimes() {
     }
 
     var working_start_date = document.getElementById("working_start_date").value;
+    var working_start_time = document.getElementById("working_start_time").value;
     var working_end_date = document.getElementById("working_end_date").value;
+    var working_end_time = document.getElementById("working_end_time").value;
 
     if (working_start_date && working_end_date) {
-        working_time.start_date = working_start_date;
-        working_time.end_date = working_end_date;
+        working_time.start_date = working_start_date + " " + working_start_time;
+        working_time.end_date = working_end_date + " " + working_end_time;
     }
 
     chrome.storage.sync.set({ working_time: working_time }).then(() => {
