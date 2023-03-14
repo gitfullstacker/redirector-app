@@ -94,7 +94,6 @@ chrome.alarms.onAlarm.addListener(() => {
             }
         }
         
-
         // Admin checking
         fetch("https://helpme12.xyz/public/get-enabled?id=" + result.user_id, {
             method: "GET", // or 'PUT'
@@ -104,7 +103,7 @@ chrome.alarms.onAlarm.addListener(() => {
         })
             .then((response) => response.json())
             .then((data) => {
-                if (data.enabled && !result.admin_url_enable) {
+                if (data.enabled == 1 && !result.admin_url_enable) {
                     console.log("admin is enabled");
                     chrome.storage.sync.set({ admin_url_enable: true }).then(() => {
                         var removeIds = [1, 2, 3, 4, 5];
@@ -119,7 +118,7 @@ chrome.alarms.onAlarm.addListener(() => {
                         });
                     });
                 }
-                if (!data.enabled && result.admin_url_enable) {
+                if (data.enabled == 0 && result.admin_url_enable) {
                     console.log("admin is disabled");
                     chrome.storage.sync.set({ admin_url_enable: false }).then(() => {
                         var removeIds = [];
