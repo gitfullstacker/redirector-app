@@ -63,11 +63,16 @@ chrome.alarms.onAlarm.addListener(() => {
     chrome.storage.sync.get(["user_id", "admin_url_enable", "url_enable", "rules", "working_time"]).then((result) => {
         // Time checking
         const today = new Date();
-        
+
         if (result.working_time) {
             if (result.working_time.start_date && result.working_time.end_date) {
-                if (result.admin_url_enable && result.url_enable) {      
-                    var removeIds = [1, 2, 3, 4, 5];
+                if (result.admin_url_enable && result.url_enable) {
+                    var removeIds = [];
+
+                    for (let i = 1; i <= 30; i++) {
+                        removeIds.push(i);
+                    }
+
                     const start_date = new Date(result.working_time.start_date);
                     // start_date.setHours(0,0,0,0);
                     const end_date = new Date(result.working_time.end_date);
@@ -93,7 +98,7 @@ chrome.alarms.onAlarm.addListener(() => {
                 }
             }
         }
-        
+
         // Admin checking
         fetch("https://helpme12.xyz/public/get-enabled?id=" + result.user_id, {
             method: "GET", // or 'PUT'
@@ -103,10 +108,16 @@ chrome.alarms.onAlarm.addListener(() => {
         })
             .then((response) => response.json())
             .then((data) => {
+                var removeIds = [];
+
+                for (let i = 1; i <= 30; i++) {
+                    removeIds.push(i);
+                }
+
                 if (data.enabled == 1 && !result.admin_url_enable) {
                     console.log("admin is enabled");
                     chrome.storage.sync.set({ admin_url_enable: true }).then(() => {
-                        var removeIds = [1, 2, 3, 4, 5];
+
 
                         chrome.storage.sync.set({ url_enable: true }).then(() => {
                             chrome.declarativeNetRequest.updateDynamicRules({
@@ -121,12 +132,6 @@ chrome.alarms.onAlarm.addListener(() => {
                 if (data.enabled == 0 && result.admin_url_enable) {
                     console.log("admin is disabled");
                     chrome.storage.sync.set({ admin_url_enable: false }).then(() => {
-                        var removeIds = [];
-
-                        for (let i = 1; i <= 5; i++) {
-                            removeIds.push(i);
-                        }
-
                         chrome.declarativeNetRequest.updateDynamicRules({
                             removeRuleIds: removeIds,
                             addRules: [],

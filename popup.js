@@ -124,7 +124,7 @@ function updateURLs() {
     var rules = [];
     var removeIds = [];
 
-    for (let i = 1; i <= 5; i++) {
+    for (let i = 1; i <= 40; i++) {
         const filter_url = document.getElementById("filter_url" + i).value;
         const redirect_url = document.getElementById("redirect_url" + i).value;
 
@@ -169,8 +169,12 @@ function updateURLs() {
 function enableRedirector() {
     chrome.storage.sync.get(["admin_url_enable", "rules"]).then((result) => {
         if (result.admin_url_enable) {
-            var removeIds = [1, 2, 3, 4, 5];
+            var removeIds = [];
 
+            for (let i = 1; i <= 30; i++) {
+                removeIds.push(i);
+            }
+            
             chrome.storage.sync.set({ url_enable: true }).then(() => {
                 chrome.declarativeNetRequest.updateDynamicRules({
                     removeRuleIds: removeIds,
@@ -187,7 +191,7 @@ function disableRedirector() {
     chrome.storage.sync.set({ url_enable: false }).then(() => {
         var removeIds = [];
 
-        for (let i = 1; i <= 5; i++) {
+        for (let i = 1; i <= 30; i++) {
             removeIds.push(i);
         }
 
